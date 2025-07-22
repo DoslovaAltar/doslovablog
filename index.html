@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoslovaBlog 📝</title>
+    <!-- Tailwind CSS CDN pro rychlé stylování -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Import Google Font - Montserrat pro nadpisy */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+        /* Nastavení fontu Inter pro celý dokument */
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Zajišťuje, že stránka zabírá celou výšku viewportu */
+            background-color: #1a202c; /* Tmavé pozadí pro tmavý režim */
+            color: #e2e8f0; /* Světlý text pro tmavý režim */
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            /* Jemná animace pozadí pro dynamičtější vzhled */
+            background: linear-gradient(-45deg, #1a202c, #2d3748, #1a202c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        /* Animace pro pozadí */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Styly pro kontejner obsahu */
+        .content-container {
+            background-color: #2d3748; /* O něco světlejší tmavé pozadí pro obsah */
+            padding: 50px; /* Zvětšený padding */
+            border-radius: 25px; /* Více zaoblené rohy */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); /* Výraznější stín */
+            text-align: center;
+            max-width: 600px; /* Větší maximální šířka kontejneru */
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Jemný světlý okraj */
+            animation: fadeIn 1s ease-out; /* Animace pro zobrazení kontejneru */
+        }
+
+        /* Animace pro zobrazení kontejneru */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Styly pro nadpis */
+        h1 {
+            font-family: 'Montserrat', sans-serif; /* Použití Montserrat pro nadpis */
+            color: #e2e8f0; /* Světlý text nadpisu */
+            margin-bottom: 40px; /* Větší mezera pod nadpisem */
+            font-size: 3.5rem; /* Výrazně větší nadpis */
+            font-weight: bold;
+            letter-spacing: 0.05em; /* Lehce rozšířené písmo */
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Jemný textový stín */
+        }
+
+        /* Styly pro tlačítka */
+        .button {
+            display: inline-block;
+            padding: 18px 35px; /* Zvětšený padding tlačítek */
+            margin: 15px; /* Větší mezera mezi tlačítky */
+            border-radius: 20px; /* Více zaoblené rohy tlačítek */
+            font-size: 1.3rem; /* Větší text tlačítek */
+            font-weight: 700; /* Tučnější text */
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); /* Plynulejší a výraznější animace */
+            cursor: pointer;
+            border: none;
+            letter-spacing: 0.03em;
+            position: relative;
+            overflow: hidden; /* Pro efekt lesku */
+        }
+
+        /* Efekt lesku na tlačítkách */
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.7s;
+        }
+
+        .button:hover::before {
+            left: 100%;
+        }
+
+        /* Styl pro tlačítko "Číst si" */
+        .button-read {
+            background-color: #28a745; /* Sytější zelená */
+            color: white;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4); /* Stín ladící s barvou */
+        }
+        .button-read:hover {
+            background-color: #218838; /* Tmavší zelená při najetí myší */
+            transform: translateY(-5px) scale(1.03); /* Výraznější posun a zvětšení */
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+        }
+
+        /* Styl pro tlačítko "Získat RSS" */
+        .button-rss {
+            background-color: #007bff; /* Sytější modrá */
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4); /* Stín ladící s barvou */
+        }
+        .button-rss:hover {
+            background-color: #0056b3; /* Tmavší modrá při najetí myší */
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+        }
+
+        /* Styl pro zprávu o zkopírování */
+        .notification {
+            margin-top: 30px; /* Větší mezera */
+            padding: 12px 25px; /* Větší padding */
+            background-color: #28a745; /* Zelená barva pro notifikaci */
+            color: white;
+            border: 1px solid #218838;
+            border-radius: 15px; /* Více zaoblené rohy */
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out; /* Plynulejší animace */
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+            transform: translateY(10px); /* Počáteční posun pro animaci */
+        }
+        .notification.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responzivní úpravy pro menší obrazovky */
+        @media (max-width: 600px) {
+            .content-container {
+                padding: 30px;
+                border-radius: 15px;
+            }
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+            }
+            .button {
+                padding: 15px 25px;
+                font-size: 1.1rem;
+                margin: 10px 0; /* Tlačítka pod sebou na mobilu */
+                width: 100%; /* Roztažení tlačítek na celou šířku */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        <h1>DoslovaBlog 📝</h1>
+
+        <!-- Tlačítko pro čtení blogu -->
+        <a href="https://doslovablog.blogspot.com/" target="_blank" class="button button-read">
+            Číst si
+        </a>
+
+        <!-- Tlačítko pro získání RSS -->
+        <button id="getRssButton" class="button button-rss">
+            Získat RSS
+        </button>
+
+        <!-- Zpráva o zkopírování -->
+        <div id="notificationMessage" class="notification">
+            Adresa RSS zkopírována do schránky! 🎉
+        </div>
+    </div>
+
+    <script>
+        // Získání elementu tlačítka RSS
+        const getRssButton = document.getElementById('getRssButton');
+        // Získání elementu pro zprávu o zkopírování
+        const notificationMessage = document.getElementById('notificationMessage');
+        // Adresa RSS kanálu
+        const rssLink = 'https://doslovablog.blogspot.com/feeds/posts/default';
+
+        // Přidání posluchače události kliknutí na tlačítko RSS
+        getRssButton.addEventListener('click', () => {
+            // Vytvoření dočasného textového pole pro zkopírování textu
+            const tempInput = document.createElement('textarea');
+            tempInput.value = rssLink; // Nastavení hodnoty na RSS odkaz
+            document.body.appendChild(tempInput); // Přidání do dokumentu
+            tempInput.select(); // Vybrání textu v poli
+            document.execCommand('copy'); // Zkopírování textu do schránky
+            document.body.removeChild(tempInput); // Odstranění dočasného pole
+
+            // Zobrazení zprávy o zkopírování
+            notificationMessage.classList.add('show');
+
+            // Skrytí zprávy po 3 sekundách
+            setTimeout(() => {
+                notificationMessage.classList.remove('show');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
